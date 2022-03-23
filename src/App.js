@@ -1,52 +1,78 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Demo from "./Demo";
 import "./App.css";
 
 const App = () => {
-  const [inputList, setInputList] = useState("");
-  const [item, setItem] = useState([]);
+  const [todoItem, setTodoItem] = useState("");
+  const [todoList, setTodoList] = useState([]);
+  useEffect(() => {
+    const data = localStorage.getItem("todo_list");
+    if (data !== null) {
+      setTodoList(JSON.parse(data));
+    }
+  }, []);
 
-  const itemEvent = (event) => {
-    setInputList(event.target.value);
+  const inputChangeHandler = (event) => {
+    setTodoItem(event.target.value);
   };
-  const listItems = () => {
-    setItem((oldItem) => {
-      return [...oldItem, inputList];
+
+  const addItem = () => {
+    setTodoList((oldItem) => {
+      const newList = [...oldItem, todoItem];
+      storeInLocalStorage(newList);
+      return newList;
     });
-    setInputList("");
+    setTodoItem("");
   };
-  const deleteItem = (id) => {
-    console.log("Deleted..");
 
-    setItem((oldItem) => {
-      return oldItem.filter((arrayElement, index) => {
+  const deleteItem = (id) => {
+    console.log("Deleted");
+
+    setTodoList((oldItem) => {
+      const newList = oldItem.filter((arrayElement, index) => {
         return index !== id;
       });
+      storeInLocalStorage(newList);
+      return newList;
     });
   };
+
+  const storeInLocalStorage = (value) => {
+    localStorage.setItem("todo_list", JSON.stringify(value));
+  };
+
+  const inputIsValid = todoItem.trim().length !== 0;
+  const buttonClasses = inputIsValid ? "" : "disabled";
 
   return (
     <>
       <div className="main">
         <div className="middle">
           <h1 className="tag">ToDo List</h1>
-          <input
-            className="input"
-            type="text"
-            value={inputList}
-            placeholder="Add a item"
-            onChange={itemEvent}
-          />
-          <button className="button" onClick={listItems}>
-            +
-          </button>
-          <ol>
-            {/* <li>{inputList}</li> */}
+          <div className="input-group">
+            <input
+              className="input"
+              type="text"
+              value={todoItem}
+              placeholder="Add a item"
+              onChange={inputChangeHandler}
+            />
+            <button
+              className={`button ${buttonClasses}`}
+              disabled={!inputIsValid}
+              onClick={addItem}
+            >
+              +
+            </button>
+          </div>
 
-            {item.map((itemVal, index) => {
-              return <Demo text={itemVal} id={index} onSelect={deleteItem} />;
-            })}
-          </ol>
+          <div className="list-con">
+            <ol>
+              {todoList.map((itemVal, index) => {
+                return <Demo text={itemVal} id={index} onSelect={deleteItem} />;
+              })}
+            </ol>
+          </div>
         </div>
       </div>
     </>

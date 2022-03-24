@@ -6,6 +6,7 @@ const Demo = (props) => {
   return (
     <>
       <div className="demo-main">
+        <li> {props.text} </li>
         <img
           className="trash"
           src={image}
@@ -14,7 +15,6 @@ const Demo = (props) => {
           }}
           alt=""
         />
-        <li> {props.text} </li>
       </div>
     </>
   );

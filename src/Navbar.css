@@ -1,0 +1,28 @@
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: aqua; */
+}
+
+.navItem {
+    padding: 10px 15px;
+    color: black;
+    border-radius: 5px;
+    border-bottom: 2px solid #8566aa;
+    box-shadow: 4px 4px 4px -4px rgba(0, 0, 0, 0.3);
+}
+
+.navItem:hover {
+    cursor: pointer;
+    background-color: rgb(195, 221, 245);
+}
+
+.navItem:not(:last-child) {
+    margin-right: 2px;
+}
+
+.active {
+    background-color: rgb(195, 221, 245);
+
+}

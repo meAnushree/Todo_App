@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Demo from "./Demo";
 import "./App.css";
+import AddForm from "./AddForm";
+import Navbar from "./Navbar";
+import Demo from "./Demo";
 
 const App = () => {
   const [todoItem, setTodoItem] = useState("");
   const [todoList, setTodoList] = useState([]);
+  const [selectedTab, setSelectedTab] = useState(1);
+
   useEffect(() => {
     const data = localStorage.getItem("todo_list");
     if (data !== null) {
@@ -65,6 +69,7 @@ const App = () => {
               +
             </button>
           </div>
+          <Navbar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
           <div className="list-con">
             <ol>
